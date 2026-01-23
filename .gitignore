@@ -1,0 +1,9 @@
+*.excalidraw
+*.excalidraw.json
+*.excalidraw.svg
+*.excalidraw.png
+node_modules/
+.env
+dist/
+build/
+.DS_Store
