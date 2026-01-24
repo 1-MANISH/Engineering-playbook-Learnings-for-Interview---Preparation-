@@ -2,7 +2,7 @@
 *.excalidraw.json
 *.excalidraw.svg
 *.excalidraw.png
-node_modules/
+*node_modules/
 .env
 dist/
 build/
