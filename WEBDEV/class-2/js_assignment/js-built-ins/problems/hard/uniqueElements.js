@@ -19,7 +19,9 @@
 */
 
 function getUniqueElements(arr) {
-  // Your code here
+
+        const uniqueElements = new Set(arr)
+        return Array.from(uniqueElements);
 }
 
 module.exports = getUniqueElements;

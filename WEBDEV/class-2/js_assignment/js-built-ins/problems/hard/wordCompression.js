@@ -22,9 +22,24 @@
 */
 
 
-function compressWords(arr) {
-  // Your code here
+function compressWords(strArr) {
+    if(strArr.length==0)return [];
+    let i = 1 , j = 0 , n =strArr.length ,currentCount=1;
+   let outputArray = [strArr[j]];
+   while(i<n){
+       if(strArr[i]==outputArray[j]){currentCount++,i++}
+       else{
+            if(currentCount>=2)outputArray[j]=outputArray[j]+currentCount.toString()
+            else outputArray[j]=outputArray[j];
+            outputArray.push(strArr[i]);
+            j++;
+            i++;
+            currentCount=1;
+       }
+   }
+   if(currentCount>=2)
+        outputArray[j]=outputArray[j]+currentCount.toString()
+   return outputArray;
 }
-
 
 module.exports = compressWords;

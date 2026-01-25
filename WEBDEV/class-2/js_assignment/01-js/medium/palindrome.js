@@ -6,8 +6,20 @@
   - `npm run test-palindrome`
 */
 
-function isPalindrome(str) {
-    return true;
+function  isChar(char){
+    return char.toLowerCase()!=char.toUpperCase();
 }
+
+function isPalindrome(str) {
+    let normalizedStr  = "";
+    for(let char of str){
+        if(char!=' ' && isChar(char))normalizedStr+=char;
+    }
+    normalizedStr = normalizedStr.toLowerCase()
+    const reversedStr = normalizedStr.split('').reverse().join('');
+    console.log(reversedStr)
+    return normalizedStr === reversedStr;
+}
+
 
 module.exports = isPalindrome;

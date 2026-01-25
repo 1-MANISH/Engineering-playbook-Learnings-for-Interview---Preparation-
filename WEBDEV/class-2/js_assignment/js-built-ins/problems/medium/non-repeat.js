@@ -21,6 +21,17 @@
   - `npm run test-nonrepeat`
 */
 function nonrepeat(str) {
-  // Your code here
+    if(str=="")return null;
+    const hashing = {}
+    for(let char of str){
+        if(hashing[char])hashing[char]++;
+        else hashing[char]=1;
+    }
+    for(let char of str){
+        if(hashing[char]===1)return char;
+    }
+    return null
 }
+    
+
 module.exports = nonrepeat;
