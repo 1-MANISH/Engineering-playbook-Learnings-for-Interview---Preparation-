@@ -2,3 +2,14 @@
 
 // Using the fs library again, try to write to the contents of a file.
 // You can use the fs library to as a black box, the goal is to understand async tasks.
+
+const fs = require('fs')
+
+// Write the contents of a file -  async
+fs.writeFile('./input.txt','hello world',function(err,data){
+        if(err){
+                console.log(err)
+                return
+        }
+        console.log(data)
+})
