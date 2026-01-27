@@ -32,7 +32,8 @@ class Calculator {
         }
         divide(num) {
                 if (num === 0) {
-                        throw new Error("Division by zero is not allowed.");
+                        throw new Error();
+
                 }
                 this.result /= num;
         }
