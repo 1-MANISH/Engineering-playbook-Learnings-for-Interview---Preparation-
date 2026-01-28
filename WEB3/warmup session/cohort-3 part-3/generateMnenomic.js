@@ -59,6 +59,6 @@ function addressGenerate(currency){
         addressIndex ++
 }
 
-addressGenerate("SOL")
+// addressGenerate("SOL")
 // addressGenerate("SOL")
 

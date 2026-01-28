@@ -1,7 +1,7 @@
 
 class Wallet{
         constructor(accountId,network,seedPhrase=[],derivationPath="",publicKey="",privateKey=""){
-                this.id = Math.random()
+                this.walletId = Math.random()
                 this.accountId=accountId
                 this.network=network
                 this.seedPhrase=seedPhrase
@@ -15,8 +15,8 @@ class Wallet{
 
 
 class Account{
-        constructor (seedPhrase=[],networks=[],wallets=[]){
-                this.accountId = Math.random()
+        constructor (seedPhrase=[],networks=[],wallets=[],accountIndex=0){
+                this.accountId =accountIndex
                 this.seedPhrase=seedPhrase
                 this.networks=networks
                 this.wallets=wallets

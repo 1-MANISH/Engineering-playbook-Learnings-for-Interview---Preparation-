@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import { useAccountStore } from '../../store/accountStore'
 
 const CreateWallet = ({
@@ -26,22 +26,22 @@ const CreateWallet = ({
 
         const [ selectedNetworks, setSelectedNetworks] = useState([])
 
-        const toggleNetwork = (network) => {
+        const toggleNetwork = useCallback(async (network) => {
                 if(selectedNetworks.includes(network)){
                         setSelectedNetworks(selectedNetworks.filter(item => item !== network))
                 }else{
                         setSelectedNetworks([...selectedNetworks,network])
                 }
-        }
+        },[selectedNetworks])
         
-        const setupNewWallet = async () =>{
+        const setupNewWallet = useCallback( async () =>{
                 try {
+                        console.log(selectedNetworks)
                         await createNewAccount(selectedNetworks)
-                        
                 } catch (error) {
                         console.log(error)
                 }
-        }
+        },[selectedNetworks,createNewAccount])
 
         return (
                 <dialog 
@@ -63,7 +63,7 @@ const CreateWallet = ({
                                                         networks.map((network) => (
                                                                 <div 
                                                                         key={network.name} 
-                                                                        className={`${selectedNetworks.includes(network.name) ? 'border-2 rounded' : ''} flex justify-center items-center shadow-lg p-4  gap-2 cursor-pointer`}
+                                                                        className={`${selectedNetworks.includes(network.code) ? 'border-2 rounded' : ''} flex justify-center items-center shadow-lg p-4  gap-2 cursor-pointer`}
                                                                         onClick={()=>{
                                                                                 toggleNetwork(network.code)
                                                                         }}

@@ -1,13 +1,14 @@
 import { useAccountStore } from "../../store/accountStore"
 import {themes} from "../../lib/utils"
-
+import { useNavigate } from "react-router"
 const Header = () => {
 
         const{toggleTheme,packbackTheme} = useAccountStore()
+        const navigate = useNavigate()
         return (
                 <div className="navbar  bg-base-100  sticky top-0 flex justify-between align-center py-4">
                        <div className="w-4">
-                                <p className="font-bold ::first-letter text-2xl">
+                                <p className="font-bold ::first-letter text-2xl" onClick={()=>navigate("/")}>
                                       PACK
                                       <span className="text-pretty">BACK</span>  
                                 </p>

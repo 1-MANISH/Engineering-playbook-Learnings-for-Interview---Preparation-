@@ -9,7 +9,7 @@ import Header from "./components/layout/Header.jsx"
 const App = () => {
 
         const {packbackTheme} = useAccountStore()
-        console.log(packbackTheme)
+
         return (
 
         <div className="min-h-screen" data-theme={packbackTheme}>

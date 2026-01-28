@@ -1,6 +1,9 @@
 {
         "editor.tabSize": 8,
         "cSpell.words": [
-                "packback"
+                "keypair",
+                "packback",
+                "solona",
+                "wordlist"
         ]
 }
