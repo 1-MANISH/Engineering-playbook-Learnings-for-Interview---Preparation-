@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState } from 'react'
 import { useAccountStore } from '../../store/accountStore'
 import {ArrowLeft, CloudDownload, GlobeX} from "lucide-react"
-
+import {networks} from "../../lib/utils"
 const AddWallet = ({
         onClose= () => {},
         isOpen= false,
@@ -9,21 +9,6 @@ const AddWallet = ({
 
         const {addWalletAccount} = useAccountStore()
 
-        const networks = [
-                {
-                        name:"ethereum",
-                        icon:"https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=022",
-                        code:'60'
-                },{
-                        name:"bitcoin",
-                        icon:"https://cryptologos.cc/logos/bitcoin-btc-logo.svg?v=022",
-                        code:'0'
-                },{
-                        name:'solana',
-                        icon:"https://cryptologos.cc/logos/solana-sol-logo.svg?v=022",
-                        code:'501'
-                }
-        ]
 
         const [ selectedNetwork, setSelectedNetwork] = useState(null)
         const [seedPhrase, setSeedPhrase] = useState([])

@@ -16,9 +16,9 @@ import {Account,Wallet} from "../lib/account"
 export const useAccountStore = create((set,get)=>({
         packbackTheme:'light',
         packbackAccounts:JSON.parse(localStorage.getItem('packbackAccounts')) || [],
-        currentAccount:null,
-        currentNetwork:null,
-        currentWallet:null,
+        currentAccount:JSON.parse(localStorage.getItem('packbackAccounts')) ? JSON.parse(localStorage.getItem('packbackAccounts'))[0] : null,
+        currentNetwork:JSON.parse(localStorage.getItem('packbackAccounts')) ? JSON.parse(localStorage.getItem('packbackAccounts'))[0].networks[0] : null,
+        currentWallet:JSON.parse(localStorage.getItem('packbackAccounts')) ? JSON.parse(localStorage.getItem('packbackAccounts'))[0].wallets[0] : null,
         pathTypeName:null,
         loading:false,
 
@@ -28,6 +28,24 @@ export const useAccountStore = create((set,get)=>({
         },
         toggleTheme:(theme)=>{
                 set({packbackTheme:theme})
+        },
+        setCurrentAccount:(accountId=0)=>{
+                set({
+                        currentAccount:get().packbackAccounts[accountId],
+                        currentNetwork:get().packbackAccounts[accountId].networks[0],
+                        currentWallet:get().packbackAccounts[accountId].wallets[0]
+                })
+        },
+        setCurrentNetwork:(networkCode)=>{
+                set({
+                        currentNetwork:networkCode,
+                        currentWallet:get().currentAccount.wallets.find((wallet)=>wallet.network===networkCode)
+                })
+        },
+        setCurrentWallet:(walletId)=>{
+                set({
+                        currentWallet:get().currentAccount.wallets.find((wallet)=>wallet.walletId===walletId && wallet.network===get().currentNetwork)
+                })
         },
         generateWalletsForMnemonic:async(networks=[],mnemonic="",newAccount=true,accountIndex=0)=>{
                 try {
@@ -174,7 +192,16 @@ export const useAccountStore = create((set,get)=>({
         getWalletsForNetwork:async(accountId,network="")=>{
                 
         },
-        addWallet:async(accountId,network)=>{
+        addWallet:async(network="")=>{
+                
+                try {
+                        if(!network){
+                                throw new Error("Please select a network")
+                        }
+                        console.log(network)
+                } catch (error) {
+                        
+                }
 
         },
         deleteWallet:async(accountId,walletId)=>{

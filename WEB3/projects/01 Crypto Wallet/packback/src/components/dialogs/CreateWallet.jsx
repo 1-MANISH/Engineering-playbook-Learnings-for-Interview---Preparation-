@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useState } from 'react'
 import { useAccountStore } from '../../store/accountStore'
+import {networks} from "../../lib/utils"
 
 const CreateWallet = ({
         onClose= () => {},
@@ -7,22 +8,6 @@ const CreateWallet = ({
 }) => {
 
         const {createNewAccount} = useAccountStore()
-
-        const networks = [
-                {
-                        name:"ethereum",
-                        icon:"https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=022",
-                        code:'60'
-                },{
-                        name:"bitcoin",
-                        icon:"https://cryptologos.cc/logos/bitcoin-btc-logo.svg?v=022",
-                        code:'0'
-                },{
-                        name:'solana',
-                        icon:"https://cryptologos.cc/logos/solana-sol-logo.svg?v=022",
-                        code:'501'
-                }
-        ]
 
         const [ selectedNetworks, setSelectedNetworks] = useState([])
 
