@@ -1,7 +1,8 @@
+
 import { useCallback, useState } from "react";
 import { useAccountStore } from "../../store/accountStore"
 import { Copy ,EllipsisVertical ,CopyCheck } from 'lucide-react'
-const SelectWalletBar = ({
+const ShowWallet = ({
         wallet={
                 walletId,
                 accountId,
@@ -13,9 +14,7 @@ const SelectWalletBar = ({
                 },
                 publicKey,
         },
-        walletIndex,
-        showWallet=false,
-        style=""
+        walletIndex
 }) => {
         const {setCurrentWallet} = useAccountStore()
         const [copied, setCopied] = useState(false);
@@ -29,8 +28,8 @@ const SelectWalletBar = ({
                 },1000)
         },[wallet.publicKey,copied])
         return (
-        <li className={`list-none ${style}`}>
-                <div className="flex gap-3 justify-between items-center w-full  my-1 p-2 " role="button" onClick={()=>!showWallet && setCurrentWallet(wallet.walletId)}>
+        <li>
+                <div className="flex gap-3 justify-between items-center w-full  my-1 p-2 " role="button" onClick={()=>setCurrentWallet(wallet.walletId)}>
                         <div className="flex justify-between items-center w-full">
                                 <div className="flex gap-1 items-center">
                                         <div className="avatar avatar-placeholder">
@@ -54,15 +53,8 @@ const SelectWalletBar = ({
                                                </div>
                                         </div>
                                 </div>
-                                <div className=" flex gap-5 items-center">
-                                      {
-                                        showWallet &&   <div className="">
-                                               <span className="font-bold text-lg">$0.00</span>
-                                        </div>
-                                      }
-                                        <div className="">
-                                                <EllipsisVertical />
-                                        </div>
+                                <div className="">
+                                        <EllipsisVertical />
                                 </div>
                         </div>
                 </div>
@@ -70,5 +62,4 @@ const SelectWalletBar = ({
         );
 };
 
-
-export default SelectWalletBar
+export default ShowWallet

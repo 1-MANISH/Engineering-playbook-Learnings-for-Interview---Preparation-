@@ -18,10 +18,11 @@ const AddNetwork = ({
         const addANetwork = useCallback( async () =>{
                 try {
                         await addWallet(selectedNetwork.code)
+                        onClose()
                 } catch (error) {
                         console.log(error)
                 }
-        },[selectedNetwork,addWallet ])
+        },[selectedNetwork,addWallet ,onClose])
 
         const next = useCallback(()=>{
                 if(step==2){

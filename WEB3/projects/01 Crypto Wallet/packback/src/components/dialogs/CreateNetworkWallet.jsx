@@ -2,19 +2,35 @@
 
 import React, { memo, useCallback, useMemo, useState } from 'react'
 import { useAccountStore } from '../../store/accountStore'
-import {ArrowLeft, ChevronRight, CloudDownload, GlobeX, LayersPlus, Plus} from "lucide-react"
+import {Plus} from "lucide-react"
 import {networks} from "../../lib/utils"
-import SelectNetworkBar from '../shared/SelectNetworkBar'
+import SelectWalletBar from '../shared/SelectWalletBar'
 const CreateNetworkWallet = ({
         onClose= () => {},
         isOpen= false,
         network=""
 }) => {
 
-        const {addWallet} = useAccountStore()
+        const {addWallet,getWalletsForNetwork,packbackAccounts,currentAccount} = useAccountStore()
 
         const [selectedNetwork,setSelectedNetwork] = useState(networks.find((net)=>net.code===network))
+        const currentNetworkWallet = useMemo(()=>{
+                 const wallets =   getWalletsForNetwork(selectedNetwork.code)   
+                 return wallets.map((wallet)=>{
+                        const network = networks.find((net)=>net.code===wallet.network)
+                        return {
+                                ...wallet,
+                                network:{
+                                        name:network?.name,
+                                        networkCode:wallet.network,
+                                        iconUrl:network?.icon
+                                },
+                                privateKey:null
+                                
+                        }
+                })
 
+        },[selectedNetwork,packbackAccounts,currentAccount])
 
         const addANetworkWallet = useCallback( async () =>{
                 try {
@@ -30,8 +46,8 @@ const CreateNetworkWallet = ({
                 id="my_modal_5" 
                 className={`modal modal-middle  sm:modal-middle ${isOpen ? 'modal-open' : ''}`}
                 >
-                        <div className="modal-box flex justify-center flex-col h-100">
-                                                 <div className="">
+                        <div className="modal-box flex justify-center flex-col h-120 overflow-scroll overflow-x-hidden">
+                                                 <div className="mt-15">
                                                         <h2 className="font-bold text-2xl text-center">
                                                                 Wallets
                                                         </h2>
@@ -77,8 +93,20 @@ const CreateNetworkWallet = ({
                                                                         </div>
                                                                 </div>
                                                         </div>
-                                                        <div className="w-full flex flex-col">
-
+                                                        <div className="w-full flex flex-col gap-2 ">
+                                                                {
+                                                                                currentNetworkWallet && currentNetworkWallet?.map((wallet,walletIndex)=>{
+                                                                                        return(
+                                                                                                <SelectWalletBar
+                                                                                                        key={wallet?.walletId*100} 
+                                                                                                        wallet={wallet} 
+                                                                                                        walletIndex={walletIndex}
+                                                                                                        style={"border-1 rounded-lg hover:border-2 cursor-pointer"}
+                                                                                                        showWallet={true}
+                                                                                                />
+                                                                                        )
+                                                                                })
+                                                                        }                        
                                                         </div>
                                                 </div>
 

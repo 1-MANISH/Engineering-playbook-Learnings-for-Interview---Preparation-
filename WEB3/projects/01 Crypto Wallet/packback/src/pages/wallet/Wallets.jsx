@@ -1,5 +1,5 @@
 import Navigation from "../../components/shared/Navigation"
-import {Logs,GlobeX,Copy,ChevronDown,Settings,Plus,CopyCheck,Import } from 'lucide-react'
+import {Logs,Copy,ChevronDown,Settings,Plus,CopyCheck,Import } from 'lucide-react'
 import { useAccountStore } from "../../store/accountStore"
 import { Suspense, useCallback, useMemo, useState } from "react"
 import SelectAccountBar from "../../components/shared/SelectAccountBar"
@@ -12,7 +12,7 @@ import AddNetwork from "../../components/dialogs/AddNetwork"
 import CreateNetworkWallet from "../../components/dialogs/CreateNetworkWallet"
 const Wallets = () => {
 
-        const {packbackAccounts,currentAccount,currentNetwork,currentWallet,setCurrentAccount} = useAccountStore()
+        const {packbackAccounts,currentAccount,currentNetwork,currentWallet} = useAccountStore()
 
         const [ isAddAccountOpen, setIsAddAccountOpen ] = useState(false)
         const [isImportAccountOpen,setIsImportAccountOpen] = useState(false)
@@ -33,7 +33,7 @@ const Wallets = () => {
                                 networkCode:network
                         }
                 })
-        },[currentAccount])
+        },[currentAccount,packbackAccounts])
 
         const currentWalletToAvailable = useMemo(()=>{
                 const wallets =  currentAccount?.wallets?.filter((wallet)=> wallet.network===currentNetwork)
@@ -51,7 +51,7 @@ const Wallets = () => {
                         }
                 })
 
-        },[currentNetwork,currentAccount])
+        },[currentNetwork,currentAccount,packbackAccounts])
 
         const currentWalletToShow = useMemo(()=>{
                 const netWorkWallets =  currentAccount?.wallets?.filter((wallet)=> wallet.network===currentNetwork)

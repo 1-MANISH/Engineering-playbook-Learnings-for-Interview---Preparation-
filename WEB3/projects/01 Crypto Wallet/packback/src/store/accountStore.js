@@ -47,7 +47,7 @@ export const useAccountStore = create((set,get)=>({
                         currentWallet:get().currentAccount.wallets.find((wallet)=>wallet.walletId===walletId && wallet.network===get().currentNetwork)
                 })
         },
-        generateWalletsForMnemonic:async(networks=[],mnemonic="",newAccount=true,accountIndex=0)=>{
+        generateWalletsForMnemonic:async(networks=[],mnemonic="",newAccount=true,accountIndex=0,walletIndex=0)=>{
                 try {
 
                         if(newAccount){
@@ -56,7 +56,7 @@ export const useAccountStore = create((set,get)=>({
 
                                 // generate wallet for each networks
                                 const paths = networks.map((network)=>{
-                                        return `m/44'/${network}'/0'/${accountIndex}'`
+                                        return `m/44'/${network}'/${walletIndex}'/${accountIndex}'`
                                 })
 
                                 // now generate wallet for each networks with public and private keys
@@ -189,8 +189,8 @@ export const useAccountStore = create((set,get)=>({
 
         },
 
-        getWalletsForNetwork:async(accountId,network="")=>{
-                
+        getWalletsForNetwork:(network="")=>{
+                return get().currentAccount.wallets.filter((wallet)=>wallet.network===network)
         },
         addWallet:async(network="")=>{
                 
@@ -198,7 +198,28 @@ export const useAccountStore = create((set,get)=>({
                         if(!network){
                                 throw new Error("Please select a network")
                         }
-                        console.log(network)
+
+                        const mnemonic  = get().currentAccount.seedPhrase.join(" ")
+                        const accountIndex = get().packbackAccounts.findIndex((account)=>account.accountId===get().currentAccount.accountId)
+                       const walletIndex = get().currentAccount.wallets.filter((wallet)=>wallet.network===network).length
+                       
+                        const wallet = await useAccountStore.getState().generateWalletsForMnemonic([network],mnemonic,true,accountIndex,walletIndex)
+                
+                        const networks =get().currentAccount.networks.includes(network) ? get().currentAccount.networks : [...get().currentAccount.networks,network]
+                  
+                        set({currentAccount:{...get().currentAccount,wallets:[...get().currentAccount.wallets,wallet[0]] , networks}})
+                       
+                        const updatedAccounts = get().packbackAccounts.map((account)=>{
+                                if(account.accountId===get().currentAccount.accountId){
+                                        return {...account,wallets:[...account.wallets,wallet[0]] , networks:networks}
+                                }
+                                return account
+                        })
+
+                        localStorage.setItem('packbackAccounts',JSON.stringify(updatedAccounts));
+
+                        set({packbackAccounts:updatedAccounts})
+
                 } catch (error) {
                         
                 }
