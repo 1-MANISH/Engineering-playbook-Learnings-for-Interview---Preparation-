@@ -5,4 +5,6 @@
 // The final reduced result must be correct and deterministic.
 async function asyncReduceLimited(array, limit, asyncProcessFn, reducer, initialValue) {}
 
+async function mapAsyncLimit(array, limit, asyncFn) {}
+
 module.exports = asyncReduceLimited;

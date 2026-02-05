@@ -9,8 +9,8 @@
 // 2. Any pending async operation should be aborted
 // 3. The pipeline must throw an AbortError
 //
-// This pattern is commonly used in fetch pipelines and job orchestration.
 async function runPipeline(fns, signal) {}
 
-  module.exports =  runPipeline ;
+module.exports = runPipeline;
+
   

@@ -5,6 +5,12 @@
 // The queue must enforce a concurrency limit, ensuring only a fixed number of tasks run at the same time, and allow this limit to be updated dynamically while the system is running.
 class DynamicPriorityQueue {
   constructor(concurrency) {}
+
+  setLimit(newLimit) {}
+
+  add(task, priority, onComplete) {}
+
+  runNext() {}
 }
 
 module.exports = DynamicPriorityQueue;

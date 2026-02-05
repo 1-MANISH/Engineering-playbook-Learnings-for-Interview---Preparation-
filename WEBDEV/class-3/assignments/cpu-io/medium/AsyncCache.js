@@ -6,6 +6,8 @@
 // store it in the cache, and automatically remove the entry after a fixed Time-to-Live (TTL) of 5 seconds.
 class AsyncCache {
   constructor(ttl = 5000) {}
+
+  async get(key, fetcher) {}
 }
 
 module.exports = AsyncCache;

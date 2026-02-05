@@ -1,79 +1,103 @@
 const LeakyBucket = require("../callbacks/hard/LeakyBucket");
 
-describe("LeakyBucket", () => {
-  test("processes tasks in FIFO order", async () => {
+describe("LeakyBucket Callback", () => {
+  test("processes tasks in FIFO order", (done) => {
     const bucket = new LeakyBucket(5, 10);
     const results = [];
+    let completed = 0;
 
-    const task = (value) => async () => {
-      results.push(value);
-      return value;
+    const checkDone = () => {
+      completed++;
+      if (completed === 3) {
+        try {
+          expect(results).toEqual([1, 2, 3]);
+          done();
+        } catch (e) { done(e); }
+      }
     };
 
-    const p1 = bucket.add(task(1));
-    const p2 = bucket.add(task(2));
-    const p3 = bucket.add(task(3));
+    const task = (val, cb) => {
+      results.push(val);
+      cb(null, val);
+    };
 
-    const resolved = await Promise.all([p1, p2, p3]);
-
-    expect(resolved).toEqual([1, 2, 3]);
-    expect(results).toEqual([1, 2, 3]);
+    bucket.add((cb) => task(1, cb), (err, res) => checkDone());
+    bucket.add((cb) => task(2, cb), (err, res) => checkDone());
+    bucket.add((cb) => task(3, cb), (err, res) => checkDone());
   });
 
-  test("enforces leak rate between task executions", async () => {
+  test("enforces leak rate between task executions", (done) => {
     const bucket = new LeakyBucket(5, 50);
     const timestamps = [];
+    let completed = 0;
 
-    const task = async () => {
-      timestamps.push(Date.now());
+    const checkDone = () => {
+      completed++;
+      if (completed === 3) {
+        try {
+          expect(timestamps[1] - timestamps[0]).toBeGreaterThanOrEqual(45);
+          expect(timestamps[2] - timestamps[1]).toBeGreaterThanOrEqual(45);
+          done();
+        } catch (e) { done(e); }
+      }
     };
 
-    await Promise.all([
-      bucket.add(task),
-      bucket.add(task),
-      bucket.add(task),
-    ]);
+    const task = (cb) => {
+      timestamps.push(Date.now());
+      cb(null);
+    };
 
-    expect(timestamps.length).toBe(3);
-    expect(timestamps[1] - timestamps[0]).toBeGreaterThanOrEqual(45);
-    expect(timestamps[2] - timestamps[1]).toBeGreaterThanOrEqual(45);
+    bucket.add(task, checkDone);
+    bucket.add(task, checkDone);
+    bucket.add(task, checkDone);
   }, 1000);
 
-  test("rejects immediately when bucket capacity is exceeded", async () => {
-    const bucket = new LeakyBucket(1, 20);
+  test("rejects immediately when bucket capacity is exceeded", (done) => {
+    const bucket = new LeakyBucket(1, 50);
 
-    const slowTask = async () => {
-      await new Promise(r => setTimeout(r, 100));
-    };
+    const slowTask = (cb) => setTimeout(() => cb(null), 100);
 
-    const p1 = bucket.add(slowTask);
-    const p2 = bucket.add(slowTask);
+    bucket.add(slowTask, () => {});
 
-    await expect(p2).rejects.toThrow("Rate Limit Exceeded");
-    await p1;
+    bucket.add(slowTask, (err) => {
+      try {
+        expect(err).toBeDefined();
+        expect(err.message).toBe("Rate Limit Exceeded");
+        done();
+      } catch (e) { done(e); }
+    });
   });
 
-  test("continues processing even if a task fails", async () => {
+  test("continues processing even if a task fails", (done) => {
     const bucket = new LeakyBucket(5, 10);
     const results = [];
+    let completed = 0;
 
-    const goodTask = async () => {
-      results.push("ok");
-      return "ok";
+    const checkDone = () => {
+      completed++;
+      if (completed === 3) {
+        try {
+          expect(results).toEqual(["ok", "ok"]);
+          done();
+        } catch (e) { done(e); }
+      }
     };
 
-    const badTask = async () => {
-      throw new Error("fail");
-    };
+    bucket.add((cb) => cb(null, "ok"), (err, res) => {
+      if (res) results.push(res);
+      checkDone();
+    });
 
-    const p1 = bucket.add(goodTask);
-    const p2 = bucket.add(badTask);
-    const p3 = bucket.add(goodTask);
+    bucket.add((cb) => cb(new Error("fail")), (err) => {
+      try {
+        expect(err.message).toBe("fail");
+        checkDone();
+      } catch (e) { done(e); }
+    });
 
-    await expect(p2).rejects.toThrow("fail");
-
-    const resolved = await Promise.all([p1, p3]);
-    expect(resolved).toEqual(["ok", "ok"]);
-    expect(results).toEqual(["ok", "ok"]);
+    bucket.add((cb) => cb(null, "ok"), (err, res) => {
+      if (res) results.push(res);
+      checkDone();
+    });
   });
 });

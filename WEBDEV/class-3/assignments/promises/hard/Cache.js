@@ -15,4 +15,4 @@ class Cache {
   get(key, fetcher) {}
 }
 
-  module.exports = Cache;
+module.exports = Cache;

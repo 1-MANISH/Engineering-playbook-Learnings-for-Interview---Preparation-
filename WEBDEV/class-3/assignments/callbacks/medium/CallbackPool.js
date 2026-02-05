@@ -5,8 +5,12 @@
 // As tasks complete, queued tasks should start automatically.
 // Each task must resolve with its own result.
 
-class PromisePool {
+class CallbackPool {
   constructor(limit) {}
+
+  run(task, onComplete) {}
+
+  _next() {}
 }
 
-module.exports = PromisePool;
+module.exports = CallbackPool;

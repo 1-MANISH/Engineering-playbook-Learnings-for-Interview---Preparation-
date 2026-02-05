@@ -53,7 +53,7 @@ export const useAccountStore = create((set,get)=>({
                         if(newAccount){
                                 // get seedBuffer from mnemonic
                                 let seedBuffer =  bip39.mnemonicToSeedSync(mnemonic) // getting buffer from mnemonic
-
+                                console.log(seedBuffer)
                                 // generate wallet for each networks
                                 const paths = networks.map((network)=>{
                                         return `m/44'/${network}'/${walletIndex}'/${accountIndex}'`
@@ -141,6 +141,9 @@ export const useAccountStore = create((set,get)=>({
                         // console.log(newAccount)
 
                         set({packbackAccounts:[...get().packbackAccounts,newAccount]})
+                        set({currentAccount:get().packbackAccounts[get().packbackAccounts.length-1]})
+                        set({currentNetwork:get().packbackAccounts[get().packbackAccounts.length-1].networks[0]})
+                        set({currentWallet:get().packbackAccounts[get().packbackAccounts.length-1].wallets[0]})
 
                         // console.log(get().packbackAccounts,'createWala')
 
@@ -153,11 +156,12 @@ export const useAccountStore = create((set,get)=>({
 
         addWalletAccount:async(seedPhrase,network="")=>{
                 try {
-                        if(seedPhrase.length===0 || (seedPhrase.length!=12 &&  seedPhrase.length!=24)){
+                        if(seedPhrase.length===0 && (seedPhrase.length!=12 &&  seedPhrase.length!=24)){
                                 throw new Error("Seed phrase must be at least 12 / 24 words")
                         }
                         
                         const mnemonic = seedPhrase.join(" ").trim();
+
                         // console.log(mnemonic,network)
                         // if(!bip39.validateMnemonic(mnemonic)){
                         //         throw new Error("Seed phrase is not valid")
@@ -172,6 +176,9 @@ export const useAccountStore = create((set,get)=>({
                         const newAccount = new Account(seedPhrase,[network],wallets,numberOfAccount)
                         // console.log(newAccount)
                         set({packbackAccounts:[...get().packbackAccounts,newAccount]})
+                         set({currentAccount:get().packbackAccounts[get().packbackAccounts.length-1]})
+                        set({currentNetwork:get().packbackAccounts[get().packbackAccounts.length-1].networks[0]})
+                        set({currentWallet:get().packbackAccounts[get().packbackAccounts.length-1].wallets[0]})
                         // console.log(get().packbackAccounts,'addWala')
                         localStorage.setItem('packbackAccounts',JSON.stringify([...get().packbackAccounts]));
                 } catch (error) {

@@ -1,50 +1,40 @@
-const {
-    fetchWithTimeout,
-    fetchWithTimeoutClean,
-  } = require("../callbacks/easy/fetchWithTimeout");
-  
-  describe("fetchWithTimeout", () => {
-    beforeEach(() => {
-      jest.useRealTimers();
-      global.fetch = jest.fn();
+const  fetchWithTimeout  = require("../callbacks/easy/fetchWithTimeout");
+
+describe("fetchWithTimeout (Callback Style)", () => {
+  beforeEach(() => {
+    jest.useRealTimers();
+    global.fetch = jest.fn();
+  });
+
+  test("calls callback with data if fetch completes within time", (done) => {
+    global.fetch.mockImplementation((url, cb) => {
+      setTimeout(() => cb(null, "data"), 20);
     });
-  
-    test("resolves if fetch completes within time", async () => {
-      global.fetch.mockResolvedValue("data");
-  
-      const result = await fetchWithTimeout("url", 100);
-      expect(result).toBe("data");
-    });
-  
-    test("rejects with timeout message if fetch is too slow", async () => {
-      global.fetch.mockImplementation(
-        () => new Promise((res) => setTimeout(() => res("data"), 100))
-      );
-  
-      await expect(fetchWithTimeout("url", 20))
-        .rejects.toBe("Request Timed Out");
+
+    fetchWithTimeout("url", 100, (err, result) => {
+      try {
+        expect(err).toBeNull();
+        expect(result).toBe("data");
+        done();
+      } catch (error) {
+        done(error);
+      }
     });
   });
-  
-  describe("fetchWithTimeoutClean (Promise.race)", () => {
-    beforeEach(() => {
-      global.fetch = jest.fn();
+
+  test("calls callback with timeout error if fetch is too slow", (done) => {
+    global.fetch.mockImplementation((url, cb) => {
+      setTimeout(() => cb(null, "data"), 100);
     });
-  
-    test("resolves when fetch wins the race", async () => {
-      global.fetch.mockResolvedValue("data");
-  
-      const result = await fetchWithTimeoutClean("url", 100);
-      expect(result).toBe("data");
-    });
-  
-    test("rejects when timeout wins the race", async () => {
-      global.fetch.mockImplementation(
-        () => new Promise((res) => setTimeout(() => res("data"), 100))
-      );
-  
-      await expect(fetchWithTimeoutClean("url", 20))
-        .rejects.toBe("Request Timed Out");
+
+    fetchWithTimeout("url", 20, (err, result) => {
+      try {
+        expect(err).toBeDefined();
+        expect(err.message || err).toBe("Request Timed Out");
+        done();
+      } catch (error) {
+        done(error);
+      }
     });
   });
-  
+});

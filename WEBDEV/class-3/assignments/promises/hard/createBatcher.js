@@ -8,7 +8,6 @@
 // 2. Each caller must receive only its own result
 // 3. Only one network call should be made per batch window
 
-function createBatcher(fetchBulk, delayMs = 50) {
-  return function add(id) {};
-}
+function createBatcher(fetchBulk, delayMs = 50) {}
+
 module.exports = createBatcher;

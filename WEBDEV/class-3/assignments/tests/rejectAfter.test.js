@@ -1,12 +1,25 @@
 const rejectAfter = require("../callbacks/easy/rejectAfter");
 
-describe("rejectAfter", () => {
-  test("rejects after given milliseconds", async () => {
+describe("rejectAfter callback", () => {
+  test("calls the callback with an error after given time", (done) => {
     const start = Date.now();
+    const waitTime = 100;
 
-    await expect(rejectAfter(100)).rejects.toThrow("Rejected after 100ms");
+    rejectAfter(waitTime, (err, result) => {
+      try {
+        const diff = Date.now() - start;
 
-    const diff = Date.now() - start;
-    expect(diff).toBeGreaterThanOrEqual(100);
+        expect(err).toBeDefined();
+        expect(err.message).toBe(`Rejected after ${waitTime}ms`);
+        
+        expect(result).toBeNull();
+        
+        expect(diff).toBeGreaterThanOrEqual(waitTime);
+        
+        done();
+      } catch (error) {
+        done(error);
+      }
+    });
   }, 300);
 });

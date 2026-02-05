@@ -2,12 +2,18 @@
 
 // You are required to write a function named sleep that accepts a time duration in milliseconds. 
 // The function should return a Promise that pauses execution for the given amount of time and then resolves.
-function sleep(millis) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, millis);
-    });
+function sleep(millis, callback) {
+
+        const promise = new Promise((resolve) => {
+                setTimeout(resolve,millis)
+        })
+
+        if(typeof callback === "function"){
+                promise.then(callback)
+        }
+        return promise
+
 }
 
 module.exports = sleep;
-
 

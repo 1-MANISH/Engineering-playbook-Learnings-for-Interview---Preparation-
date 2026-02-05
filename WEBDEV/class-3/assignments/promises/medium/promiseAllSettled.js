@@ -6,3 +6,4 @@
 function promiseAllSettled(promises) {}
 
 module.exports = promiseAllSettled;
+

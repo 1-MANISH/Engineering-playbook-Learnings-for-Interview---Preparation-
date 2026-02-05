@@ -15,8 +15,7 @@ class Scheduler {
 
   schedule(task, priority = 0) {}
 
-  async run() {}
+  run(onAllFinished) {}
 }
 
-  
-  module.exports = Scheduler;
+module.exports = Scheduler;

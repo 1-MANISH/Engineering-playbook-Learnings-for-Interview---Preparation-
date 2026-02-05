@@ -6,3 +6,4 @@
 function withTimeout(promise, ms) {}
 
 module.exports = withTimeout;
+

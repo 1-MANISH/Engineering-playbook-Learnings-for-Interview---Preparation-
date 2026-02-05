@@ -16,7 +16,7 @@ const AddWallet = ({
         
         const importAWallet = useCallback( async () =>{
                 try {
-                        if(seedPhrase.length===0 || (seedPhrase.length!=12 &&  seedPhrase.length!=24)){
+                        if(seedPhrase.length===0 && (seedPhrase.length!==12 &&  seedPhrase.length!=24)){
                                 throw new Error("Seed phrase must be at least 12 / 24 words")
                         }
                         await addWalletAccount(seedPhrase,selectedNetwork)

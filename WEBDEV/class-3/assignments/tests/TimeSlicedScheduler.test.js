@@ -28,7 +28,6 @@ describe("TimeSlicedScheduler", () => {
 
     const runPromise = scheduler.run();
 
-    // This should run before task-2 due to yield
     await new Promise(r => setTimeout(r, 0));
     events.push("event-loop");
 

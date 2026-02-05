@@ -1,33 +1,51 @@
 const retryOnce = require("../callbacks/easy/retryOnce");
 
-describe("retryOnce", () => {
-  test("retries once after failure and then succeeds", async () => {
+describe("retryOnce callback", () => {
+  test("retries once after failure and then succeeds", (done) => {
     let calls = 0;
 
-    const fn = async () => {
+    const fn = (cb) => {
       calls++;
-      if (calls === 1) throw "fail";
-      return "success";
+      if (calls === 1) {
+        cb("fail", null);
+      } else {
+        cb(null, "success");
+      }
     };
 
     const wrapped = retryOnce(fn);
-    const result = await wrapped();
 
-    expect(result).toBe("success");
-    expect(calls).toBe(2);
+    wrapped((err, result) => {
+      try {
+        expect(result).toBe("success");
+        expect(err).toBeNull();
+        expect(calls).toBe(2);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
   });
 
-  test("throws if both attempts fail", async () => {
+  test("returns error if both attempts fail", (done) => {
     let calls = 0;
 
-    const fn = async () => {
+    const fn = (cb) => {
       calls++;
-      throw "error";
+      cb("error", null);
     };
 
     const wrapped = retryOnce(fn);
 
-    await expect(wrapped()).rejects.toBe("error");
-    expect(calls).toBe(2);
+    wrapped((err, result) => {
+      try {
+        expect(err).toBe("error");
+        expect(result).toBeNull();
+        expect(calls).toBe(2);
+        done();
+      } catch (e) {
+        done(e);
+      }
+    });
   });
 });

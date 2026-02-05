@@ -14,13 +14,11 @@ describe("blockEventLoop", () => {
       timerFired = true;
     }, 10);
 
-    // This should block the event loop, so the timer above can't run
-    // even though it was scheduled for 10ms.
+    
     blockEventLoop(100);
 
     expect(timerFired).toBe(false);
 
-    // Now give the event loop a chance to breathe
     await new Promise((res) => setTimeout(res, 0));
     expect(timerFired).toBe(true);
   });
@@ -52,7 +50,6 @@ describe("blockEventLoop", () => {
     });
 
     blockEventLoop(50);
-    // Even microtasks can't run if the loop is blocked
     expect(promiseFired).toBe(false);
 
     await new Promise((res) => setTimeout(res, 0));

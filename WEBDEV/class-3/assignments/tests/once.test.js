@@ -1,39 +1,48 @@
 const once = require("../callbacks/easy/once");
 
-describe("once", () => {
-  test("calls the async function only once", async () => {
+describe("once callback", () => {
+  test("calls the async function only once", (done) => {
     let callCount = 0;
-
-    const fn = async (x) => {
+    const fn = (x, cb) => {
       callCount++;
-      return x * 2;
+      setTimeout(() => cb(null, x * 2), 10);
     };
 
     const onceFn = once(fn);
 
-    const r1 = await onceFn(2);
-    const r2 = await onceFn(10);
-
-    expect(callCount).toBe(1);
-    expect(r1).toBe(4);
-    expect(r2).toBe(4);
+    onceFn(2, (err, r1) => {
+      onceFn(10, (err, r2) => {
+        try {
+          expect(callCount).toBe(1);
+          expect(r1).toBe(4);
+          expect(r2).toBe(4); 
+          done();
+        } catch (e) { done(e); }
+      });
+    });
   });
 
-  test("returns the same promise for concurrent calls", async () => {
+  test("handles concurrent calls", (done) => {
     let callCount = 0;
-
-    const fn = async () => {
+    const fn = (cb) => {
       callCount++;
-      await new Promise((res) => setTimeout(res, 50));
-      return "done";
+      setTimeout(() => cb(null, "done"), 50);
     };
 
     const onceFn = once(fn);
+    let completed = 0;
 
-    const [r1, r2] = await Promise.all([onceFn(), onceFn()]);
+    const check = (err, res) => {
+      completed++;
+      if (completed === 2) {
+        try {
+          expect(callCount).toBe(1);
+          done();
+        } catch (e) { done(e); }
+      }
+    };
 
-    expect(callCount).toBe(1);
-    expect(r1).toBe("done");
-    expect(r2).toBe("done");
+    onceFn(check);
+    onceFn(check);
   });
 });

@@ -22,7 +22,7 @@ const Wallets = () => {
 
         const currentNetworkToShow = useMemo(()=>{
                 return networks.find((net)=>net.code===currentNetwork)
-        },[currentNetwork])
+        },[currentNetwork,packbackAccounts])
 
         const currentNetworkAvailable = useMemo(()=>{
                 return currentAccount?.networks?.map((network)=>{
@@ -33,11 +33,11 @@ const Wallets = () => {
                                 networkCode:network
                         }
                 })
-        },[currentAccount,packbackAccounts])
+        },[currentAccount,packbackAccounts,packbackAccounts])
 
         const currentWalletToAvailable = useMemo(()=>{
                 const wallets =  currentAccount?.wallets?.filter((wallet)=> wallet.network===currentNetwork)
-                return wallets.map((wallet)=>{
+                return wallets?.map((wallet)=>{
                         const network = networks.find((net)=>net.code===wallet.network)
                         return {
                                 ...wallet,
@@ -51,16 +51,19 @@ const Wallets = () => {
                         }
                 })
 
-        },[currentNetwork,currentAccount,packbackAccounts])
+        },[currentNetwork,currentAccount,packbackAccounts,packbackAccounts])
 
         const currentWalletToShow = useMemo(()=>{
                 const netWorkWallets =  currentAccount?.wallets?.filter((wallet)=> wallet.network===currentNetwork)
+                if(!netWorkWallets?.length){
+                        return null
+                }
                 const currentWalletIndex = netWorkWallets?.findIndex((wallet)=>wallet.walletId===currentWallet.walletId)
                 return {
                         ...netWorkWallets[currentWalletIndex],
                         walletIndex:currentWalletIndex+1
                 }
-        },[currentAccount,currentWallet,currentNetwork])
+        },[currentAccount,currentWallet,currentNetwork,packbackAccounts])
 
         const copyToClipboard = useCallback(()=>{
                 setCopied(true)
@@ -126,8 +129,8 @@ const Wallets = () => {
                                                                 <div  tabIndex={2} role="button" className="avatar avatar-placeholder cursor-pointer">
                                                                                 {/* <span><GlobeX /></span> */}
                                                                                   <img 
-                                                                                        src={currentNetworkToShow.icon} 
-                                                                                        alt={currentNetworkToShow.name} 
+                                                                                        src={currentNetworkToShow?.icon} 
+                                                                                        alt={currentNetworkToShow?.name} 
                                                                                         className="w-6 h-6"
                                                                                 />
                                                                 </div>

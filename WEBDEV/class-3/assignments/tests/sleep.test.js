@@ -1,15 +1,18 @@
 const sleep = require("../callbacks/easy/sleep");
 
-describe("sleep function", () => {
-  test("sleeps for 1 second", async () => {
+describe("sleep callback", () => {
+  test("waits for the specified time before calling back", (done) => {
     const start = Date.now();
-    await sleep(1000);
-    expect(Date.now() - start).toBeGreaterThanOrEqual(1000);
-  }, 2000);
+    const duration = 100;
 
-  test("sleeps for 500 ms", async () => {
-    const start = Date.now();
-    await sleep(500);
-    expect(Date.now() - start).toBeGreaterThanOrEqual(500);
-  }, 1500);
+    sleep(duration, () => {
+      try {
+        const diff = Date.now() - start;
+        expect(diff).toBeGreaterThanOrEqual(duration);
+        done();
+      } catch (error) {
+        done(error);
+      }
+    });
+  }, 200); 
 });

@@ -14,10 +14,9 @@
 class LeakyBucket {
   constructor(capacity, leakRateMs) {}
 
-  add(task) {}
+  add(task, onComplete) {}
 
-  async _leak() {}
+  _process() {}
 }
-
 
 module.exports = LeakyBucket;

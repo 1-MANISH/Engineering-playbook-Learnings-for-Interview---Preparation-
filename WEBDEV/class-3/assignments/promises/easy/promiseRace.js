@@ -7,3 +7,4 @@
 function promiseRace(promises) {}
 
 module.exports = promiseRace;
+

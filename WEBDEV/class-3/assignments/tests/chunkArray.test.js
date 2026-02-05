@@ -45,7 +45,6 @@ describe("chunkArray", () => {
   });
 
   test("should return empty array if input is null or not an array", () => {
-    // This depends on the desired API behavior, but usually we handle it gracefully
     expect(chunkArray(null, 2)).toEqual([]);
     expect(chunkArray(undefined, 2)).toEqual([]);
   });

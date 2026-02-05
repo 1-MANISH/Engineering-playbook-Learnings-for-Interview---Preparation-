@@ -5,12 +5,10 @@
 // If the request completes within the specified time, the Promise resolves with the fetched data. 
 // If the operation exceeds the time limit, the Promise rejects with the message "Request Timed Out".
 
-function fetchWithTimeout(url, ms) {
+function fetchWithTimeout(url, ms, callback) {
+
         
+       
 }
 
-function fetchWithTimeoutClean(url, ms) {
-   
-}
-
-module.exports = { fetchWithTimeout, fetchWithTimeoutClean };
+module.exports = fetchWithTimeout;

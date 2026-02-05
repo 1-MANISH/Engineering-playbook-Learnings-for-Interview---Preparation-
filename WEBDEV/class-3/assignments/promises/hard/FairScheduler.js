@@ -24,5 +24,5 @@ class FairScheduler {
   async run() {}
 }
 
-  module.exports = FairScheduler;
-  
+module.exports = FairScheduler;
+

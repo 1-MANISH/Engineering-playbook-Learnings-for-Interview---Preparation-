@@ -16,5 +16,4 @@ class TimeSlicedScheduler {
   async run() {}
 }
 
-  module.exports = TimeSlicedScheduler;
-  
+module.exports = TimeSlicedScheduler;
