@@ -4,11 +4,17 @@
 // The function should return a Promise that waits for the specified time and then rejects.
 
 function rejectAfter(ms, callback) {
-        return new Promise((resolve, reject) => {
+        const p =  new Promise((resolve, reject) => {
                 setTimeout(() => {
-                      reject()
+                      reject(new Error(`Rejected after ${ms}ms`))
                 },ms)
         })
+
+        if(typeof callback === "function"){
+                p.then(res=>callback(null,res))
+                .catch(err=>callback(err,null))
+        }
+        return p
 }
 
 module.exports = rejectAfter;
