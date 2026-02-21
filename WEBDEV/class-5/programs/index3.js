@@ -12,14 +12,21 @@ function promisifiedSetTimeout(milliSecond){
 
 }
 
+
+// save use from promise chaining and callback hell
 async function printSomethingInGap(){
 
-        totalTimeout+=await promisifiedSetTimeout(1000);
-        totalTimeout+=await promisifiedSetTimeout(2000);
-        totalTimeout+=await promisifiedSetTimeout(3000);
+        try {
+                totalTimeout+=await promisifiedSetTimeout(1000);//wait and then move to next line of code
+                totalTimeout+=await promisifiedSetTimeout(2000);// wait and then move to next line of code
+                totalTimeout+=await promisifiedSetTimeout(3000);// wait and then move to next line of code
 
-        console.log("Total Time : "+totalTimeout)
+                console.log("Total Time : "+totalTimeout)
+        } catch (error) {
+                console.log("ERROR : "+error)
+        }
 
 }
-
+console.log("BEFORE CALLING ASYNC FUNCTION")
 printSomethingInGap().then(data=>{}).catch(err=>{}).finally(data=>{})
+console.log("AFTER CALLING ASYNC FUNCTION")

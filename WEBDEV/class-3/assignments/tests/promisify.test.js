@@ -1,24 +1,35 @@
-const promisify = require("../callbacks/easy/promisify");
+const promisify = require("../promises/easy/promisify");
 
-describe("promisify", () => {
-  test("resolves with data when callback has no error", async () => {
-    const cbFn = (a, b, cb) => {
-      setTimeout(() => cb(null, a + b), 10);
+describe("promisify Utility", () => {
+  test("resolves when the original function succeeds", async () => {
+    const slowSquare = (n, cb) => {
+      setTimeout(() => cb(null, n * n), 10);
     };
 
-    const promisedFn = promisify(cbFn);
-    const result = await promisedFn(2, 3);
+    const promisedSquare = promisify(slowSquare);
+    const result = await promisedSquare(5);
 
-    expect(result).toBe(5);
+    expect(result).toBe(25);
   });
 
-  test("rejects when callback receives an error", async () => {
-    const cbFn = (_, __, cb) => {
-      setTimeout(() => cb("error"), 10);
+  test("rejects when the original function returns an error", async () => {
+    const failFunc = (cb) => {
+      setTimeout(() => cb(new Error("Operation Failed")), 10);
     };
 
-    const promisedFn = promisify(cbFn);
+    const promisedFail = promisify(failFunc);
 
-    await expect(promisedFn(1, 2)).rejects.toBe("error");
+    await expect(promisedFail()).rejects.toThrow("Operation Failed");
+  });
+
+  test("works with multiple arguments", async () => {
+    const multiply = (a, b, cb) => {
+      cb(null, a * b);
+    };
+
+    const promisedMultiply = promisify(multiply);
+    const result = await promisedMultiply(3, 4);
+
+    expect(result).toBe(12);
   });
 });
