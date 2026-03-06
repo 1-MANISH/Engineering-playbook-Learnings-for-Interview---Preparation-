@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Calculator</title>
+        <style>
+                body {
+                        font-family: Arial, sans-serif;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 100vh;
+                        margin: 0;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                }
+                
+                .calculator {
+                        background: white;
+                        padding: 30px;
+                        border-radius: 10px;
+                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                        width: 300px;
+                }
+                
+                h1 {
+                        text-align: center;
+                        color: #333;
+                }
+                
+                input {
+                        width: 100%;
+                        padding: 10px;
+                        margin: 10px 0;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        box-sizing: border-box;
+                        font-size: 16px;
+                }
+                
+                .button-group {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 10px;
+                        margin-top: 20px;
+                }
+                
+                button {
+                        padding: 12px;
+                        font-size: 16px;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        background-color: #667eea;
+                        color: white;
+                        transition: background-color 0.3s;
+                }
+                
+                button:hover {
+                        background-color: #764ba2;
+                }
+                
+                #result {
+                        margin-top: 20px;
+                        padding: 15px;
+                        background-color: #f0f0f0;
+                        border-radius: 5px;
+                        text-align: center;
+                        font-size: 18px;
+                        font-weight: bold;
+                        color: #333;
+                }
+        </style>
+</head>
+<body>
+        <div class="calculator">
+                <h1>Calculator</h1>
+                <input type="number" id="num1" placeholder="Number 1">
+                <input type="number" id="num2" placeholder="Number 2">
+                
+                <div class="button-group">
+                        <button onclick="calculate('+')">Add</button>
+                        <button onclick="calculate('-')">Subtract</button>
+                        <button onclick="calculate('*')">Multiply</button>
+                        <button onclick="calculate('/')">Divide</button>
+                </div>
+                
+                <div id="result"></div>
+        </div>
+
+        <script>
+                async function calculate(operation) {
+                        const num1 = parseFloat(document.getElementById('num1').value);
+                        const num2 = parseFloat(document.getElementById('num2').value);
+
+
+                       let result;
+
+                        switch(operation){
+                                case '+':
+                                        const sum = num1 + num2;
+                                        response = await makeApiCall(operation,num1,num2);
+                                        document.getElementById('result').textContent = `Result: ${response.result}`;
+                                        break;
+                                case '-':
+                                        const sub = num1 - num2;
+                                          response = await makeApiCall(operation,num1,num2);
+                                        document.getElementById('result').textContent = `Result: ${response.result}`;
+                                        break;
+                                case '*':
+                                        const mul = num1 * num2;
+                                          response = await makeApiCall(operation,num1,num2);
+                                        document.getElementById('result').textContent = `Result: ${response.result}`;
+                                        break;
+                                case '/':
+                                        const div = num1 / num2;
+                                        response = await makeApiCall(operation,num1,num2);
+                                        document.getElementById('result').textContent = `Result: ${response.result}`;
+                                        break;
+                                default:
+                                        document.getElementById('result').textContent = 'Invalid operation';
+                        }
+                      
+                }
+
+                async function makeApiCall(operation,a,b){
+                          let response;
+                        switch(operation){
+                                case '+':
+                                        response = await fetch(`http://localhost:4001/calculator/sum?num1=${a}&num2=${b}`)
+                                        return await response.json();
+                                        break;
+                                case '-':
+                                        response = await fetch(`http://localhost:4001/calculator/sub?num1=${a}&num2=${b}`)
+                                        return await response.json();
+                                        break;
+                                case '*':
+                                        response = await fetch(`http://localhost:4001/calculator/mul`,{
+                                                method:"POST",
+                                                headers:{
+                                                        "Content-Type":"application/json"
+                                                },
+                                                body:JSON.stringify({
+                                                        num1:a,
+                                                        num2:b
+                                                })
+                                        })
+                                        return await response.json();
+                                        break;
+                                case '/':
+                                        response = await fetch(`http://localhost:4001/calculator/div?num1=${a}&num2=${b}`,{
+                                                method:"POST"
+                                        })
+                                        return await response.json();
+                                        break;
+                                
+                        }
+                }
+                
+             
+        </script>
+</body>
+</html>

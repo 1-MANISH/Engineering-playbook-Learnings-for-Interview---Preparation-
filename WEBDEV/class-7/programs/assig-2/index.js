@@ -79,3 +79,9 @@ function main(){
 }
 
 main()
+
+// process.argv[2] // node index.js file.txt
+
+// process.argv[0] // node
+// process.argv[1] // index.js
+// process.argv[2] // file.txt
