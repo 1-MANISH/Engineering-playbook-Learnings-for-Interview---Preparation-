@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  email        String     @unique
+  name         String
+  passwordHash String
+  launches     Launch[]
+  purchases    Purchase[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Launch {
+  id            Int               @id @default(autoincrement())
+  creator       User              @relation(fields: [creatorId], references: [id])
+  creatorId     Int
+  name          String
+  symbol        String
+  totalSupply   Int
+  pricePerToken Float
+  startsAt      DateTime
+  endsAt        DateTime
+  maxPerWallet  Int
+  description   String?
+  tiers         Json?
+  vesting       Json?
+  whitelist     WhitelistEntry[]
+  referrals     ReferralCode[]
+  purchases     Purchase[]
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+}
+
+model WhitelistEntry {
+  id       Int    @id @default(autoincrement())
+  launch   Launch @relation(fields: [launchId], references: [id])
+  launchId Int
+  address  String
+
+  @@unique([launchId, address])
+}
+
+model ReferralCode {
+  id              Int     @id @default(autoincrement())
+  launch          Launch  @relation(fields: [launchId], references: [id])
+  launchId        Int
+  code            String
+  discountPercent Int
+  maxUses         Int
+  usedCount       Int     @default(0)
+  purchases       Purchase[]
+
+  @@unique([launchId, code])
+}
+
+model Purchase {
+  id              Int          @id @default(autoincrement())
+  launch          Launch       @relation(fields: [launchId], references: [id])
+  launchId        Int
+  user            User         @relation(fields: [userId], references: [id])
+  userId          Int
+  walletAddress   String
+  amount          Int
+  totalCost       Float
+  txSignature     String
+  referralCode    ReferralCode? @relation(fields: [referralCodeId], references: [id])
+  referralCodeId  Int?
+  createdAt       DateTime     @default(now())
+
+  @@unique([launchId, txSignature])
+}

@@ -14,7 +14,7 @@ async function getPDAAddress(){
                 // using top function
                 const address  = await getAssociatedTokenAddress(
                         new PublicKey("FGccjjbjLR9HfkqHArTWSNEiTsXkYkyPZ8jreiNLhMU5"), // mint_address -  let USDC_mint address (current -randomTokenMint)
-                        new PublicKey("4i7RemktiYVynotHTCRvBtVvTNa7m8Wvq7GvytLmYX6T")// my_address - my wallet address
+                        new PublicKey("EVgKrHgMwMPBeh2vMWkUoUyH2954dHJEiReJQSpCT5ow")// my_address - my wallet address
 
                 )
 
