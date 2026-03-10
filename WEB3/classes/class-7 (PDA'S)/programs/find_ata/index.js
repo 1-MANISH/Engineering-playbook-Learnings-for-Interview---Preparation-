@@ -1,4 +1,4 @@
-import {getAssociatedTokenAddress} from "@solana/spl-token"
+import {getAssociatedTokenAddress,TOKEN_2022_PROGRAM_ID} from "@solana/spl-token"
 import { PublicKey } from "@solana/web3.js"
 
 
@@ -14,7 +14,9 @@ async function getPDAAddress(){
                 // using top function
                 const address  = await getAssociatedTokenAddress(
                         new PublicKey("FGccjjbjLR9HfkqHArTWSNEiTsXkYkyPZ8jreiNLhMU5"), // mint_address -  let USDC_mint address (current -randomTokenMint)
-                        new PublicKey("EVgKrHgMwMPBeh2vMWkUoUyH2954dHJEiReJQSpCT5ow")// my_address - my wallet address
+                        new PublicKey("EVgKrHgMwMPBeh2vMWkUoUyH2954dHJEiReJQSpCT5ow"),// my_address - my wallet address,
+                        false,
+                        TOKEN_2022_PROGRAM_ID
 
                 )
 
