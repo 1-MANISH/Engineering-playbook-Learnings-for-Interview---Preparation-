@@ -13,10 +13,15 @@ async function getPDAAddress(){
         try {
                 // using top function
                 const address  = await getAssociatedTokenAddress(
+<<<<<<< HEAD
                         new PublicKey("FGccjjbjLR9HfkqHArTWSNEiTsXkYkyPZ8jreiNLhMU5"), // mint_address -  let USDC_mint address (current -randomTokenMint)
                         new PublicKey("EVgKrHgMwMPBeh2vMWkUoUyH2954dHJEiReJQSpCT5ow"),// my_address - my wallet address,
                         false,
                         TOKEN_2022_PROGRAM_ID
+=======
+                        new PublicKey("token_mint_address"), // mint_address -  let USDC_mint address (current -randomTokenMint)
+                        new PublicKey("user_wallet_address")// my_address - my wallet address
+>>>>>>> 50fac2917e4d45286dc00847fea6a0cc117d90ea
 
                 )
 
@@ -24,7 +29,7 @@ async function getPDAAddress(){
                 // way 2 to use main function
                 const [address2] =  await PublicKey.findProgramAddress(
                         [
-                                new PublicKey("EVgKrHgMwMPBeh2vMWkUoUyH2954dHJEiReJQSpCT5ow").toBuffer(), //owner
+                                new PublicKey("user_wallet_address").toBuffer(), //owner
                                 new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA").toBuffer(),// token program id - public available
                                 new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v").toBuffer() , // usdc mint address
                         ],
