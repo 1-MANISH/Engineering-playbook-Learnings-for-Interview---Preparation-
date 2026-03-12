@@ -45,7 +45,7 @@ async function main(){
         )
 
         const tx = new Transaction().add(
-                SystemProgram.createAccount({
+                AssociateTokenProgram.create({
                         fromPubkey: keyPair.publicKey,
                         newAccountPubkey:  randomPDA,
                         space: 165,
