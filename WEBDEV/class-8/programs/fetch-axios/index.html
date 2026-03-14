@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Just Make Request</title>
+</head>
+<body>
+        <button onclick="makeApiCall()">Make Request</button>
+        <script>
+
+                async function makeApiCall() {
+                        const response = await fetch('http://localhost:4001/calculator/sum/2/2')
+                        const data = await response.json()
+                        console.log(data)
+                }
+
+
+
+        </script>
+</body>
+</html>

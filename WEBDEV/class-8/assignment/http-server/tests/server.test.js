@@ -67,8 +67,8 @@ describe("TODO App Server HTTP Routes", () => {
 
     it("3. Should return the newly resulting list of all todos in the response body as JSON array", async () => {
       const res = await fetch(`${baseURL}/create/todo`, {
-        method: "POST",
-        body: JSON.stringify({ title: "Test 3", description: "Desc 3" }),
+                method: "POST",
+                body: JSON.stringify({ title: "Test 3", description: "Desc 3" }),
       });
       const data = await res.json();
       expect(Array.isArray(data)).toBe(true);

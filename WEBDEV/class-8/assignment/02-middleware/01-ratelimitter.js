@@ -11,17 +11,43 @@ const app = express();
 // You have been given a numberOfRequestsForUser object to start off with which
 // clears every one second
 
-let numberOfRequestsForUser = {};
+let numberOfRequestsForUser = {}
 setInterval(() => {
-    numberOfRequestsForUser = {};
+    numberOfRequestsForUser = {}
 }, 1000)
 
+function rateLimitUserMiddleware(req,res,next){
+
+        const userId = req.header['user-id']
+        const currentTime = Math.floor(Date.now() / 1000); // Current second timestamp
+
+        // Initialize user data if not already present
+        if (!numberOfRequestsForUser[userId]) {
+                numberOfRequestsForUser[userId] = { count: 0, lastRequestTime: currentTime }
+        }
+
+        const userData = numberOfRequestsForUser[userId]
+
+        if (currentTime === userData.lastRequestTime) {// same second me requesting multiple times
+                userData.count += 1
+        } else {
+                userData.count = 1 // reset -  as trying to send request in a new second
+                userData.lastRequestTime = currentTime
+        }
+        if(userData.count > 5){
+                return res.status(404).json({ error: 'Too many requests' })
+        }
+        next()
+}
+
+app.use(rateLimitUserMiddleware);
+
 app.get('/user', function(req, res) {
-  res.status(200).json({ name: 'john' });
-});
+        res.status(200).json({ name: 'john' })
+})
 
 app.post('/user', function(req, res) {
-  res.status(200).json({ msg: 'created dummy user' });
-});
+        res.status(200).json({ msg: 'created dummy user' })
+})
 
 module.exports = app;

@@ -39,11 +39,109 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
-  const bodyParser = require('body-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
+const fs = require("fs");
+
+const app = express();
   
-  const app = express();
+app.use(bodyParser.json());
+
+
+app.get("/todos",(req,res)=>{
+        const todos = JSON.parse(fs.readFileSync('todos.json','utf-8')).todos
+        res.status(200).json( todos)
+})
+
+app.get("/todos/:id",(req,res)=>{
+
+        const {id} = req.params
+
+        const todos = JSON.parse(fs.readFileSync('todos.json','utf-8')).todos
+
+        const todo = todos.find((tod) =>tod.id == id)
+        if(!todo){
+                return res.status(404).json({
+                        success:false,
+                        message:"Todo not found"
+                })
+        }
+
+        res.status(200).json(todo)
+})
+
+app.post("/todos",(req,res)=>{
+
+        const {title,description,completed} = req.body
+
+        const todos = JSON.parse(fs.readFileSync('todos.json','utf-8')).todos
+
+        const newTodo = {
+                id: todos.length + 1,
+                title,
+                description,
+                completed:completed || false
+        }
+
+        todos.push(newTodo)
+
+        fs.writeFileSync('todos.json',JSON.stringify({todos}))
+
+        res.status(201).json(newTodo)
+})
+
+app.put("/todos/:id",(req,res)=>{
+
+        const {id} = req.params
+
+        const {description,title,completed} = req.body
+
+        const todos = JSON.parse(fs.readFileSync('todos.json','utf-8')).todos
+
+        const todo = todos.find((todo)=>todo.id == id)
+        if(!todo){
+                return res.status(404).json({
+                        success:false,
+                        message:"Todo not found"
+                })
+        }
+        if(title)
+                todo.title = title
+        if(description)
+                todo.description = description
+        if(completed)
+                todo.completed = completed
+
+        fs.writeFileSync('todos.json',JSON.stringify({todos}))
+
+        res.status(200).json(todo)
+})
+
+app.delete("/todos/:id",(req,res)=>{
+
+        const {id} = req.params
+
+        const todos = JSON.parse(fs.readFileSync('todos.json','utf-8')).todos
+
+        const todo = todos.find((todo)=>todo.id == id)
+        if(!todo){
+                return res.status(404).json({
+                        success:false,
+                        message:"Todo not found"
+                })
+        }
+
+        const indexOfTodo = todos.indexOf(todo)
+        todos.splice(indexOfTodo,1)
+
+        fs.writeFileSync('todos.json',JSON.stringify({todos}))
+        
+        res.status(200).json({
+                success:true,
+                message:"Todo deleted successfully"     
+        })
+})
+
+
   
-  app.use(bodyParser.json());
-  
-  module.exports = app;
+module.exports = app;

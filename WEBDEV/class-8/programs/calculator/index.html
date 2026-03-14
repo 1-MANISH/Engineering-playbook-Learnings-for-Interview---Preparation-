@@ -88,7 +88,14 @@
                 <div id="result"></div>
         </div>
 
-        <script>
+        <script src="https://cdn.jsdelivr.net/npm/axios@1.13.2/dist/axios.min.js"></script>
+
+        <script type=""  >
+
+                // const axios = require("axios/dist/browser/axios.cjs"); // browser commonJS bundle (ES2017)
+                const axiosInstance   = axios.create({
+                        baseURL:"http://localhost:4001",
+                })
                 async function calculate(operation) {
                         const num1 = parseFloat(document.getElementById('num1').value);
                         const num2 = parseFloat(document.getElementById('num2').value);
@@ -115,6 +122,10 @@
                                 case '/':
                                         const div = num1 / num2;
                                         response = await makeApiCall(operation,num1,num2);
+                                        if(response.error){
+                                                document.getElementById('result').textContent = response.error;
+                                                return
+                                        }
                                         document.getElementById('result').textContent = `Result: ${response.result}`;
                                         break;
                                 default:
@@ -127,7 +138,7 @@
                           let response;
                         switch(operation){
                                 case '+':
-                                        response = await fetch(`http://localhost:4001/calculator/sum?num1=${a}&num2=${b}`)
+                                        response = await fetch(`http://localhost:4001/calculator/sum/${a}/${b}`)
                                         return await response.json();
                                         break;
                                 case '-':
@@ -135,17 +146,26 @@
                                         return await response.json();
                                         break;
                                 case '*':
-                                        response = await fetch(`http://localhost:4001/calculator/mul`,{
-                                                method:"POST",
-                                                headers:{
-                                                        "Content-Type":"application/json"
-                                                },
-                                                body:JSON.stringify({
-                                                        num1:a,
-                                                        num2:b
-                                                })
+                                        // response = await fetch(`http://localhost:4001/calculator/mul`,{
+                                        //         method:"POST",
+                                        //         headers:{
+                                        //                 "Content-Type":"application/json"
+                                        //         },
+                                        //         body:JSON.stringify({
+                                        //                 num1:a,
+                                        //                 num2:b
+                                        //         })
+                                        // })
+                                        // return await response.json();
+
+                                         response =await  axiosInstance.post("/calculator/mul",{
+                                                num1:a,
+                                                num2:b
                                         })
-                                        return await response.json();
+
+                                        console.log(response)
+
+                                        return response.data
                                         break;
                                 case '/':
                                         response = await fetch(`http://localhost:4001/calculator/div?num1=${a}&num2=${b}`,{

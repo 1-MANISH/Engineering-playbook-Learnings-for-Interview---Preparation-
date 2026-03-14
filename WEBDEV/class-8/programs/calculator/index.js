@@ -9,6 +9,7 @@
 import express from "express"
 import path from "path"
 import { fileURLToPath } from "url"
+import cors from "cors"
 
 const app  = express()
 
@@ -18,7 +19,11 @@ const dirname = path.dirname(filename)
 
 // middleware - > body parser
 app.use(express.json())
-
+// app.use(express.static(path.join(dirname)))
+app.use(cors({
+        origin:"*",
+        // methods:["POST"]
+}))
 app.use((req,res,next)=>{
         console.log(req.method,req.url)
         next()
@@ -45,9 +50,9 @@ app.get('/',(req,res)=>{
         res.status(200).sendFile(path.join(dirname,"index.html"))
 })
 
-app.get('/calculator/sum',(req,res)=>{
-        let a = parseInt(req.query.num1)
-        let b = parseInt(req.query.num2)
+app.get('/calculator/sum/:a/:b',(req,res)=>{
+        let a = parseInt(req.params.a)
+        let b = parseInt(req.params.b)
 
         let sum = a + b
         res.status(200).json({
@@ -88,7 +93,11 @@ app.post('/calculator/div',(req,res)=>{
 
        try {
                 if(b==0){
-                        throw new Error("Cannot divide by zero")
+                       return  res.status(400).json({
+                        success:false,
+                        message:"Cannot divide by zero",
+                        error:"Cannot divide by zero"
+                })
                 }
                 let div = a / b
                 res.status(200).json({
