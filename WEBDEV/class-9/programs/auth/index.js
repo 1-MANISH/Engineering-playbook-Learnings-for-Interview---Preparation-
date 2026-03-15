@@ -12,8 +12,6 @@ const jwt_secret = "note_secret_token_key"
 app.use(express.json())
 
 function authMiddleware(req,res,next){
-
-
         const note_token_string = req.headers['note_token']
 
         if(!note_token_string){
@@ -22,9 +20,7 @@ function authMiddleware(req,res,next){
                         error:"User not authenticated"
                 })
         }
-
         const note_token = note_token_string.split(' ')[1]
-
 
         try {
                 const decoded = jwt.verify(note_token,jwt_secret)
@@ -48,7 +44,6 @@ function authMiddleware(req,res,next){
         }
 }
 
-
 const notes = [] // this is bad
 // databases -  [mongodb,  postgres , mysql]
 const users = []
@@ -62,7 +57,7 @@ app.get('/signup',(req,res)=>{
         res.status(200).sendFile(filePath)
 })
 
-app.get('/',authMiddleware,(req,res)=>{
+app.get('/',(req,res)=>{
         const filePath = path.join(path.dirname(fileURLToPath(import.meta.url)),"./frontend/index.html")
         res.status(200).sendFile(filePath)
 
