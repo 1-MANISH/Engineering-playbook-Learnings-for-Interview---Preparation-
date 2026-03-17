@@ -50,6 +50,7 @@ describe("TODO App Server HTTP Routes", () => {
     it("1. Should add a new todo when provided with a valid title and description, returning a 200 status", async () => {
       const res = await fetch(`${baseURL}/create/todo`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: "Test 1", description: "Desc 1" }),
       });
       expect(res.status).toBe(200);
@@ -58,6 +59,7 @@ describe("TODO App Server HTTP Routes", () => {
     it("2. Should auto-increment the ID correctly for every new todo created", async () => {
       const res = await fetch(`${baseURL}/create/todo`, {
         method: "POST",
+         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: "Test 2", description: "Desc 2" }),
       });
       const data = await res.json();
@@ -68,6 +70,7 @@ describe("TODO App Server HTTP Routes", () => {
     it("3. Should return the newly resulting list of all todos in the response body as JSON array", async () => {
       const res = await fetch(`${baseURL}/create/todo`, {
                 method: "POST",
+                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ title: "Test 3", description: "Desc 3" }),
       });
       const data = await res.json();
@@ -78,6 +81,7 @@ describe("TODO App Server HTTP Routes", () => {
     it("4. Should correctly parse body parameters into the resulting data", async () => {
       const res = await fetch(`${baseURL}/create/todo`, {
         method: "POST",
+         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: "Test 4", description: "Desc 4" }),
       });
       const data = await res.json();
@@ -89,6 +93,7 @@ describe("TODO App Server HTTP Routes", () => {
     it("5. Should handle sequential creation reliably", async () => {
       const res = await fetch(`${baseURL}/create/todo`, {
         method: "POST",
+         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: "Test 5", description: "Desc 5" }),
       });
       const data = await res.json();

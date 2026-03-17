@@ -11,7 +11,6 @@ app.use(express.json())
 
 
 
-
 app.get('/',(req,res)=>{
         res.status(200).send("Hello World")
 })
@@ -19,7 +18,6 @@ app.get('/',(req,res)=>{
 app.post('/create/todo', (req, res) => {
 
         const {title,description} = req.body
-        console.log(title,description)
 
         const newTodo = {
                 id:todos.length+1,
@@ -34,8 +32,13 @@ app.get('/todos', (req, res) => {
         res.status(200).json(todos)
 })
   
-  app.get('/todo/:id', (req, res) => {
-        const todo = todos.find(t => t.id === parseInt(req.params.id))
+app.get('/todo', (req, res) => {
+        const todo = todos.find(t => t.id === parseInt(req.query.id))
+        if(isNaN(parseInt(req.query.id))){
+                res.status(404).json({
+                        error:'Todo not found'
+                })
+        }
         if (!todo) {
                 res.status(404).json({
                         error:'Todo not found'
@@ -45,8 +48,8 @@ app.get('/todos', (req, res) => {
         }
   });
 
-  app.delete('/todo/:id', (req, res) => {
-        const todo = todos.find(t => t.id === parseInt(req.params.id))
+app.delete('/todo', (req, res) => {
+        const todo = todos.find(t => t.id === parseInt(req.query.id))
         if (!todo) {
                 res.status(404).json({
                         error:'Todo not found'
