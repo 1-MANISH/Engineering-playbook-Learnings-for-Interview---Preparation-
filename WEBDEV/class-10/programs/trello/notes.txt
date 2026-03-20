@@ -1,0 +1,71 @@
+
+const users = [{
+        id:1,
+        username:"user1",// uniqueness constraints
+        password:"user1"
+},{
+        id:2,
+        username:"user2",
+        password:"user2"
+},{
+        id:3,
+        username:"user3",
+        password:"user3"
+}]
+
+const organizations = [
+        {
+                id:1,
+                title:"100x",
+                description:"100x description",
+                admin:1,
+                members:[2]
+       },{
+        
+                id:2,
+                title:"hardik org",
+                description:"hardik org",
+                admin:2,
+                members:[]
+       }
+]
+
+const boards = [{
+        id:1,
+        title:"100x school website frontend",
+        organizationId:1,
+
+}]
+
+const issues =[{
+        id:1,
+        title:"Add dark mode",
+        boardId:1,
+        state:"IN_PROGRESS",//NEXT_UP,IN_PROGRESS,DONE,ARCHIVED
+},{
+         id:2,
+        title:"Allow admin to create more boards",
+        boardId:1,
+        state:"IN_PROGRESS",//NEXT_UP,IN_PROGRESS,DONE,ARCHIVED
+}]
+
+
+app.use('/api/auth',authRoutes)
+
+// CREATE
+// /organization
+// /add-member-to-organization
+// /board
+//  /issues
+
+// PUT
+// /issues/:issueId {state}
+
+// READ
+//  /boards?organizationId=1 // www.trello.com/boards?organizationId=1
+//  /issues?boardId=1 // www.trello.com/issues?boardId=1
+//  /members
+
+
+// DELETE
+ // /member/delete?memberId=1
