@@ -1,0 +1,85 @@
+{
+        "users": [
+                {
+                        "id": 1,
+                        "username": "hardik",
+                        "password": "$2b$10$A4ubEMIQ7QsqqCuiqp/r3eE1l2pwbx5qHjyxemTj/nG04SHMVo5Uy"
+                },
+                {
+                        "id": 2,
+                        "username": "rohit",
+                        "password": "$2b$10$0oE2HiUmsvR1qxXi3vsWEeHzuRvJUiut8UVd5aYvT2Qfr4l6OlXvK"
+                },
+                {
+                        "id": 3,
+                        "username": "devik",
+                        "password": "$2b$10$3GP17WjGH/5I1Ld9O/x0u.FCUN.HJ7/LKc77x5hEVxAsN8/Av1jae"
+                }
+        ],
+        "organizations": [
+                {
+                        "id": 1,
+                        "name": "100xshcool",
+                        "description": "100xshcool organization by harkirat",
+                        "admin": 1,
+                        "members": [
+                                2,
+                                3
+                        ]
+                },
+                {
+                        "id": 2,
+                        "name": "mikeyOrganization",
+                        "description": "mikeyOrganization organization by mikey",
+                        "admin": 1,
+                        "members": []
+                }
+        ],
+        "boards": [
+                {
+                        "id": 1,
+                        "title": "100xdev school trello project tasks",
+                        "organizationId": "1"
+                },
+                {
+                        "id": 2,
+                        "title": "100xdev school fhantom project tasks",
+                        "organizationId": "1"
+                },
+                {
+                        "id": 3,
+                        "title": "DSA contest platform task",
+                        "organizationId": "2"
+                }
+        ],
+        "issues": [
+                {
+                        "id": 1,
+                        "title": "Design schema",
+                        "description": "Design schema for trello appliation",
+                        "boardId": 1,
+                        "state": "next_up"
+                },
+                {
+                        "id": 2,
+                        "title": "Define Routes",
+                        "description": "Define routes for trello appliation",
+                        "boardId": 1,
+                        "state": "next_up"
+                },
+                {
+                        "id": 3,
+                        "title": "Impletement Routes",
+                        "description": "Impletement routes for trello appliation",
+                        "boardId": 1,
+                        "state": "next_up"
+                },
+                {
+                        "id": 4,
+                        "title": "Design Schema ",
+                        "description": "Design Schema -  for fhantom appliation",
+                        "boardId": 2,
+                        "state": "next_up"
+                }
+        ]
+}

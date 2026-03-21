@@ -1,12 +1,47 @@
 
 import jwt from "jsonwebtoken"
-export function generateToken(userId,username){
+import { ENV } from "./env.js"
+import { TOKEN_NAME } from "./constants.js"
 
-        return jwt.sign(
-                {userId,username},
-                process.env.JWT_SECRET,
+
+export function generateToken(user,res){
+
+        const jwt_secret = ENV.JWT_SECRET
+        const nodeEnv = ENV.NODE_ENV
+
+        if(!jwt_secret){
+                throw new Error('JWT_SECRET is not defined')
+        }
+
+        const token =  jwt.sign(
+                user,
+                jwt_secret,
+                {expiresIn:"1d"}
+        )
+
+        res.cookie(
+                TOKEN_NAME,
+                token,
                 {
-                        expiresIn:"1d"
+                        maxAge:1*24*60*60*1000,
+                        httpsOnly:true,
+                        sameSite:nodeEnv==="development"?"lax":"strict",
+                        secure:nodeEnv==="development"?false:true
                 }
         )
+
+        return token
+}
+
+export function clearCookie(res){
+
+        res.cookie(
+                TOKEN_NAME,
+                "",
+                {
+                        maxAge:0,
+                }
+        )
+
+       
 }

@@ -1,8 +1,16 @@
+// trello clone - file based
 
-const users = [{
-        id:1,
-        username:"user1",// uniqueness constraints
-        password:"user1"
+// username , password ? USERS table
+// organization | ORGANIZATION table
+// boards | BOARDS table
+// issues | ISSUES table
+
+
+const users = [
+        {
+                id:1,
+                username:"user1",// uniqueness constraints
+                password:"user1"
 },{
         id:2,
         username:"user2",
@@ -25,7 +33,7 @@ const organizations = [
                 id:2,
                 title:"hardik org",
                 description:"hardik org",
-                admin:2,
+                admin:1,
                 members:[]
        }
 ]
@@ -34,7 +42,6 @@ const boards = [{
         id:1,
         title:"100x school website frontend",
         organizationId:1,
-
 }]
 
 const issues =[{
@@ -50,16 +57,25 @@ const issues =[{
 }]
 
 
+//relationships in b/w dbs -  
+1) one to one
+2) one to many
+3 ) many to one
+4) many to many
+
 app.use('/api/auth',authRoutes)
 
+        -app.use('/api/auth/signup')
+        -app.use('/api/auth/login')
+
 // CREATE
-// /organization
-// /add-member-to-organization
-// /board
-//  /issues
+// /organization/create
+// /add/member-to-organization
+// /board/create?organizationId=org_id
+//  /issues/create?organizationId=org_id&boardId=b_id
 
 // PUT
-// /issues/:issueId {state}
+// /issues?organizationId=org_id&boardId=b_id&issueId=issueId {state}
 
 // READ
 //  /boards?organizationId=1 // www.trello.com/boards?organizationId=1
