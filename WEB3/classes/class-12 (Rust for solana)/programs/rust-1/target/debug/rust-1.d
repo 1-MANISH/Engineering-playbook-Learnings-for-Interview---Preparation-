@@ -1,0 +1,1 @@
+C:\Users\HP\Desktop\100x\ Dev\ Learning\WEB3\classes\class-12\ (Rust\ for\ solana)\programs\rust-1\target\debug\rust-1.exe: C:\Users\HP\Desktop\100x\ Dev\ Learning\WEB3\classes\class-12\ (Rust\ for\ solana)\programs\rust-1\src\main.rs
