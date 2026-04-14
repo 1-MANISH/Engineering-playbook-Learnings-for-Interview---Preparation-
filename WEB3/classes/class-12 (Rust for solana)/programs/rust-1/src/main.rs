@@ -1,9 +1,12 @@
 fn main() {
-    let mut x = 5;
-    println!("The value of x is : {x}");
-    x = 6;
-    println!("The value of x is : {x}");
+        let  str = String::from("Harkirat");
+        let copyStr: &String = & str;
+        let len = get_length(& str);
+        let len1 = get_length(& str);
+        println!("{} {} {}", str,len,len1);
 }
 
-
-
+fn get_length(str:&String) -> usize {
+        let len = str.len();
+        return len
+}
