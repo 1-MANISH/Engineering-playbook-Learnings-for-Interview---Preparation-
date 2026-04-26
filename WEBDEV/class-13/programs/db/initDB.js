@@ -1,6 +1,6 @@
 import { fileURLToPath } from "url"
 import path from "path"
-// import client from "./db.js"
+import client from "./db.js"
 import fs from "fs"
 
 export const initDB = async () =>{
@@ -11,8 +11,8 @@ export const initDB = async () =>{
                 const files =  fs.readdirSync(schemaPath)
 
                 for(let file of files){
-                //         const sql = fs.readFileSync(path.join(schemaPath,file),"utf-8")
-                //         await pool.query(sql)
+                        const sql = fs.readFileSync(path.join(schemaPath,file),"utf-8")
+                        await client.query(sql)
                         console.log(`Created table ${file}`)
                 }
 
