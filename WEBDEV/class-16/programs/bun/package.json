@@ -9,5 +9,11 @@
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "@types/mongoose": "^5.11.97",
+    "express": "^5.2.1",
+    "mongoose": "^9.7.0"
   }
 }
