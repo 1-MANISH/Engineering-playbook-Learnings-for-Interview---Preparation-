@@ -1,20 +1,6 @@
 import "dotenv/config";
-import express, { type Request ,type Response} from "express"
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "./generated/prisma/client.js";
-
-const PORT  = process.env.PORT || 3002
-
-const client = new PrismaClient({
-        adapter:new  PrismaPg({
-                connectionString: process.env.DATABASE_URL
-        }),
-        log: ['query']
-})
-
-const app = express()
-
-app.use(express.json())
 
 interface User{
         username:string,
@@ -43,7 +29,12 @@ const user2:User = {
         city:"rajkot"
 }
 
-
+const client = new PrismaClient({
+        adapter:new  PrismaPg({
+                connectionString: process.env.DATABASE_URL
+        }),
+        log: ['query']
+})
 async function createUser(user:User):Promise<User>{
       const newUser =   await client.user.create({
                 data:user
@@ -132,33 +123,8 @@ async function main(){
     
 }
 
-const getUsersHandler = async(req:Request,res:Response)=>{
-        try {
-                const users =  await client.user.findMany({})
-                return res.status(200).json(users)
-        } catch (error) {
-                return error
-        }
-}
-const getUserTodosHandler = async(req:Request,res:Response)=>{
-        try {
-                const userId = Number(req.params.userId) || 1
-                if(!userId)
-                         return res.status(400).send("userId is required"
-
-                )
-                const todos =  await client.todo.findMany({where:{
-                        userId:userId
-                }})
-                return res.status(200).json(todos)
-        } catch (error) {
-                return error
-        }
-}
-
-app.get("/users",getUsersHandler)
-app.get("/user/todo/:userId",getUserTodosHandler)
-
-app.listen(PORT,()=>{
-        console.log(`Server is running on port ${PORT}`);
-})
+main()
+    .catch(console.error)
+    .finally(async () => {
+        // await client.$disconnect()
+    })

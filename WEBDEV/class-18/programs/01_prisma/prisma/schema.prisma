@@ -20,7 +20,7 @@ model User {
         password String
         age Int 
         city String 
-
+        todos Todo[]
 }
 
 model Todo {
@@ -30,6 +30,6 @@ model Todo {
         completed Boolean @default(false)
         userId Int
         time DateTime @default(now())
-        // user User @relation(fields: [userId], references: [id])
+        user User  @relation(fields: [userId],references: [id])
 }
 
