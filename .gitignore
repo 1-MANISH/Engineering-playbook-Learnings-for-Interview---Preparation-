@@ -3,6 +3,7 @@
 *.excalidraw.svg
 *.excalidraw.png
 *node_modules/
+*config
 .env
 dist/
 build/
@@ -16,3 +17,5 @@ build/
 
 # Backup files
 **/*.rs.bk
+
+
