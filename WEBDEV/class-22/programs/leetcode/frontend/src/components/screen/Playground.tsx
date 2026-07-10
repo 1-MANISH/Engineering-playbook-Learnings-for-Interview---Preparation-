@@ -32,7 +32,8 @@ export default function Playground() {
                         setOutput(response.data.submission.output)
                         setError(response.data.submission.error)
                   }else{
-                        await new Promise(r=>setTimeout(r,2*1000))
+                        // TODO:add exponential backoff -  5 times failed then give up
+                        await new Promise(r=>setTimeout(r,3*1000))
                         pollBackend(submissionId)
                   }
             } catch (error) {
